@@ -1,0 +1,48 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: ${{ matrix.kind }} ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    strategy:
+      matrix:
+        os: ['macos-latest', 'windows-latest', 'ubuntu-latest']
+        kind: ['test']
+    steps:
+      - name: Configure git
+        run: git config --global core.symlinks true
+
+      - name: Clone repository
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+          submodules: true
+
+      - name: Install Deno (Linux)
+        if: startsWith(matrix.os, 'ubuntu')
+        run: |
+          sudo apt-get install -y xclip xsel xvfb --no-install-recommends
+          curl -fsSL https://deno.land/x/install/install.sh | sudo DENO_INSTALL=/usr/local sh -s v0.25.0
+
+      - name: Install Deno (Mac)
+        if: startsWith(matrix.os, 'macOS')
+        run: |
+          curl -fsSL https://deno.land/x/install/install.sh | sudo DENO_INSTALL=/usr/local sh -s v0.25.0
+  
+      - name: Install Deno (Windows)
+        if: startsWith(matrix.os, 'windows')
+        run: |
+          iwr https://deno.land/x/install/install.ps1 -useb | iex
+          echo ::add-path::$Home\\.deno\\bin
+
+      - name: Log versions
+        run: |
+          deno --version
+
+      - name: Test
+        if: matrix.kind == 'test'
+        run: |
+          deno test --allow-net test.ts
