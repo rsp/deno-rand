@@ -2,7 +2,7 @@
 // MIT License (Expat). See: https://github.com/rsp/deno-rand
 
 import { test } from 'https://deno.land/std@v0.25.0/testing/mod.ts';
-import { assertEquals } from 'https://deno.land/std@v0.25.0/testing/asserts.ts';
+import { assert } from 'https://deno.land/std@v0.25.0/testing/asserts.ts';
 
 import { rand, testRng, ranges } from './mod.ts';
 
@@ -53,3 +53,21 @@ for (let k in tests) {
     }
   });  
 }
+
+test({
+  name: `rand.s32 range`,
+  async fn() {
+    const [ minR, maxR ] = ranges.s32;
+    const { min, max } = testRng({
+      ...defaults,
+      ...tests.s32,
+      min: ranges.s32[0],
+      max: ranges.s32[1],
+      rng: rand.s32,
+    });
+    const a = (minR - min) / (maxR - minR);
+    const b = (max - maxR) / (maxR - minR);
+    assert(a < 1e-5, 'Minimum returned number to far from range limit');
+    assert(b < 1e-5, 'Maximum returned number to far from range limit');
+  }
+});  
