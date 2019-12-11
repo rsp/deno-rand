@@ -54,20 +54,22 @@ for (let k in tests) {
   });  
 }
 
-test({
-  name: `rand.s32 range`,
-  async fn() {
-    const [ minR, maxR ] = ranges.s32;
-    const { min, max } = testRng({
-      ...defaults,
-      ...tests.s32,
-      min: ranges.s32[0],
-      max: ranges.s32[1],
-      rng: rand.s32,
-    });
-    const a = (minR - min) / (maxR - minR);
-    const b = (max - maxR) / (maxR - minR);
-    assert(a < 1e-5, 'Minimum returned number to far from range limit');
-    assert(b < 1e-5, 'Maximum returned number to far from range limit');
-  }
-});  
+for (let k of ['s32', 'u32']) {
+  test({
+    name: `rand.${k} range`,
+    async fn() {
+      const [ minR, maxR ] = ranges[k];
+      const { min, max } = testRng({
+        ...defaults,
+        ...tests[k],
+        min: ranges[k][0],
+        max: ranges[k][1],
+        rng: rand[k],
+      });
+      const a = (minR - min) / (maxR - minR);
+      const b = (max - maxR) / (maxR - minR);
+      assert(a < 1e-5, `Minimum returned number ${min} to far from range limit ${minR}`);
+      assert(b < 1e-5, `Maximum returned number ${max} to far from range limit ${maxR}`);
+    }
+  });  
+}
