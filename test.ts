@@ -46,14 +46,15 @@ for (let k in tests) {
       const { min, max } = testRng({
         ...defaults,
         ...tests[k],
-        min: ranges[k][0],
-        max: ranges[k][1],
+        min: minR,
+        max: maxR,
         rng: rand[k],
       });
-      const a = (minR - min) / (maxR - minR);
-      const b = (max - maxR) / (maxR - minR);
-      assert(a < 1e-5, `Minimum returned number ${min} to far from range limit ${minR}`);
-      assert(b < 1e-5, `Maximum returned number ${max} to far from range limit ${maxR}`);
+      const a = (min - minR) / (maxR - minR);
+      const b = (maxR - max) / (maxR - minR);
+      console.log({ min, minR, max, maxR });
+      assert(a < 1e-5, `Minimum returned number ${min} to far from range limit ${minR} (a ${a})`);
+      assert(b < 1e-5, `Maximum returned number ${max} to far from range limit ${maxR} (b ${b})`);
     }
   });  
 }

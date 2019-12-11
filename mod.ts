@@ -103,7 +103,7 @@ export function testRng({
 }: testRngOptions) {
   let xMin: number = Infinity;
   let xMax: number = -Infinity;
-  for (let i = 0; i < num || cover && xMin !== min && xMax !== max; i++) {
+  for (let i = 0; i < num || cover && (xMin !== min || xMax !== max); i++) {
     if (i >= limit) {
       throw new Error(`Number of iterations ${i+1} exceeded limit ${limit} (min ${xMin}, max ${xMax}`);
     }
@@ -119,9 +119,14 @@ export function testRng({
     }
     if (x < xMin) {
       xMin = x;
-    } else if (x > xMax) {
+    }
+    if (x > xMax) {
       xMax = x;
     }
+  }
+  if (cover && (xMin !== min || xMax !== max)) {
+    // this should never happen
+    throw new Error(`Cover range [${xMin}, ${xMax}] does not satisfy expected [${min}, ${max}]`);
   }
   return {
     min: xMin,
