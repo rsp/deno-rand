@@ -51,6 +51,25 @@ The advantage of `randU7()` vs `rand.u7()`
 is that you can import only what you need and avoid
 mistakenly writing `s7` instead of `u7` etc.
 
+`Math.random()` replacement:
+
+```ts
+import { f64 } from './mod.ts';
+
+Math.random = f64;
+```
+
+The `f64()` function should be a drop-in replacement
+for `Math.random()` with **exactly** the same range and
+distribution, but using cryptographically strong random data.
+If it is not an exact replacement then it is a bug
+and should be filed as an issue.
+
+The `f64()` returns a random 64-bit floating point number
+calculated from 64 bits of random data in the same way
+as in [ToDouble()](https://github.com/v8/v8/blob/085fed0f/src/base/utils/random-number-generator.h#L93-L99)
+used by V8 for `Math.random()`.
+
 Supported bit widths:
 
 s1,
@@ -72,7 +91,8 @@ u6,
 u7,
 u8,
 u16,
-u32
+u32,
+f64
 
 TODO:
 
