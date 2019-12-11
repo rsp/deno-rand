@@ -11,7 +11,11 @@ to get cryptographically strong random data.
 
 In Deno `crypto.getRandomValues()` was implemented in
 [PR #2327](https://github.com/denoland/deno/pull/2327)
-using Rust's [`rand::rngs::ThreadRng`](https://docs.rs/rand/0.6.5/rand/rngs/struct.ThreadRng.html).
+using Rust's [`rand::rngs::ThreadRng`](https://docs.rs/rand/0.6.5/rand/rngs/struct.ThreadRng.html)
+(see also Deno's
+[Issue #1891: Implement webcrypto APIs](https://github.com/denoland/deno/issues/1891)
+and
+[Issue #2321: Add Crypto.getRandomValues()](https://github.com/denoland/deno/issues/2321)).
 
 This module should work in the browser and in Node.js
 but currently it was only tested in Deno (on Linux, Mac and Windows).
@@ -69,6 +73,11 @@ The `f64()` returns a random 64-bit floating point number
 calculated from 64 bits of random data in the same way
 as in [ToDouble()](https://github.com/v8/v8/blob/085fed0f/src/base/utils/random-number-generator.h#L93-L99)
 used by V8 for `Math.random()`.
+I.e. it sets 24 of those 64 bits to a fixed exponent,
+leaving 40 bits of mantissa random, and subtracts 1 to
+get numbers in the range of 0 (inclusive) to 1 (exclusive).
+This ensures a uniform distribution of values but it means
+that we get only 40 bits of real entropy.
 
 Supported bit widths:
 
@@ -114,9 +123,9 @@ that it uses a strange way to get a random 5-bit integer:
 
 It gets an 8-bit integer, divides it by 255, then multiplies by 32
 and subtracts 1 if the result is 32,
-instead of jast shifting or masking bits,
-and it's not obvious if the numbers are uniformly distributted
-if calculated that way.
+instead of just shifting or masking bits,
+and it's not obvious whether the numbers are uniformly distributted
+if calculated that way (good thought excercise to prove if they are!).
 
 This shows that simple things like getting a random number
 in a particular range can be hard to do
