@@ -6,8 +6,8 @@ const { isInteger: isInt } = Number;
 
 type RNG = () => number;
 
-const s8buf = new Int8Array(1);
-const u8buf = new Uint8Array(1);
+const  s8buf = new Int8Array(1);
+const  u8buf = new Uint8Array(1);
 const s16buf = new Int16Array(1);
 const u16buf = new Uint16Array(1);
 const s32buf = new Int32Array(1);
@@ -22,11 +22,11 @@ export const f64 = () => {
   return d64view.getFloat64(0) - 1;
 }
 
-export const  s8 = () => grv(s8buf)[0];
+export const  s8 = () => grv( s8buf)[0];
 export const s16 = () => grv(s16buf)[0];
 export const s32 = () => grv(s32buf)[0];
 
-export const  u8 = () => grv(u8buf)[0];
+export const  u8 = () => grv( u8buf)[0];
 export const u16 = () => grv(u16buf)[0];
 export const u32 = () => grv(u32buf)[0];
 
@@ -63,7 +63,7 @@ export const u14 = () => u16() >> 2;
 export const u15 = () => u16() >> 1;
 
 // TODO: optimize
-export const sInt = (bits: number) => s32() >> (32 - bits);
+export const sInt = (bits: number) => s32() >>  (32 - bits);
 export const uInt = (bits: number) => u32() >>> (32 - bits);
 
 export const randS1 = s1;
