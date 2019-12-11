@@ -4,7 +4,7 @@
 import { test } from 'https://deno.land/std@v0.25.0/testing/mod.ts';
 import { assertEquals } from 'https://deno.land/std@v0.25.0/testing/asserts.ts';
 
-import { rand, testRng, limits } from './mod.ts';
+import { rand, testRng, ranges } from './mod.ts';
 
 const defaults = {
   min: 0,
@@ -39,7 +39,7 @@ const tests = {
 };
 
 for (let k in tests) {
-  const [min, max] = limits[k];
+  const [min, max] = ranges[k];
   test({
     name: `rand.${k}`,
     async fn() {

@@ -59,7 +59,7 @@ export const randU8 = u8;
 export const randU16 = u16;
 export const randU32 = u32;
 
-export const limits = {
+export const ranges = {
   u1: [0, 0b1],
   u2: [0, 0b11],
   u3: [0, 0b111],
