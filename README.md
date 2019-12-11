@@ -18,48 +18,6 @@ but currently it was only tested in Deno (on Linux, Mac and Windows).
 
 Work in progress.
 
-Why it was created
--
-I started looking into [ulid](https://github.com/ulid/javascript)
-to port it to Deno and I saw in its
-[index.ts](https://github.com/ulid/javascript/blob/a5831206a11636c94d4657b9e1a1354c529ee4e9/lib/index.ts)
-that it uses a strange way to get a random 5-bit integer:
-
-It gets an 8-bit integer, divides it by 255, then multiplies by 32
-and subtracts 1 if the result is 32,
-instead of jast shifting or masking bits,
-and it's not obvious if the numbers are uniformly distributted
-if calculated that way.
-
-This shows that simple things like getting a random number
-in a particular range can be hard to do
-without complicating it in a way that it is hard to see if
-the randomness was not accidentally redused in the process.
-
-I believe that code generating cryptographically strong random
-numbers should be easy to understand and audit.
-
-This module consists of multiple small functions,
-there are many of them but each one is very simple, like:
-
-```ts
-const u8buf = new Uint8Array(1);
-
-const u8 = () => crypto.getRandomValues(u8buf)[0];
-
-const u5 = () => u8() >> 3;
-```
-
-TODO:
-
-- Add optional support for `Math.random()`
-- Add more bit widths
-- Add multiple values
-- Optimize with larger prepopulated buffers
-- Test in the browser
-- Test in Node
-- Publish on npm as well
-
 Usage
 -
 
@@ -115,6 +73,48 @@ u7,
 u8,
 u16,
 u32
+
+TODO:
+
+- Add optional support for `Math.random()`
+- Add more bit widths
+- Add multiple values
+- Optimize with larger prepopulated buffers
+- Test in the browser
+- Test in Node
+- Publish on npm as well
+
+Why it was created
+-
+I started looking into [ulid](https://github.com/ulid/javascript)
+to port it to Deno and I saw in its
+[index.ts](https://github.com/ulid/javascript/blob/a5831206a11636c94d4657b9e1a1354c529ee4e9/lib/index.ts)
+that it uses a strange way to get a random 5-bit integer:
+
+It gets an 8-bit integer, divides it by 255, then multiplies by 32
+and subtracts 1 if the result is 32,
+instead of jast shifting or masking bits,
+and it's not obvious if the numbers are uniformly distributted
+if calculated that way.
+
+This shows that simple things like getting a random number
+in a particular range can be hard to do
+without complicating it in a way that it is hard to see if
+the randomness was not accidentally redused in the process.
+
+I believe that code generating cryptographically strong random
+numbers should be easy to understand and audit.
+
+This module consists of multiple small functions,
+there are many of them but each one is very simple, like:
+
+```ts
+const u8buf = new Uint8Array(1);
+
+const u8 = () => crypto.getRandomValues(u8buf)[0];
+
+const u5 = () => u8() >> 3;
+```
 
 Issues
 -
