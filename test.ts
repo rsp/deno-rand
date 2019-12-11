@@ -39,22 +39,6 @@ const tests = {
 };
 
 for (let k in tests) {
-  const [min, max] = ranges[k];
-  test({
-    name: `rand.${k}`,
-    async fn() {
-      testRng({
-        ...defaults,
-        ...tests[k],
-        min,
-        max,
-        rng: rand[k],
-      });
-    }
-  });  
-}
-
-for (let k of ['s32', 'u32']) {
   test({
     name: `rand.${k} range`,
     async fn() {
