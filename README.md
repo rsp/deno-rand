@@ -78,7 +78,8 @@ TODO:
 
 - Add optional support for `Math.random()`
 - Add more bit widths
-- Add multiple values
+- Add support for ranges other than round binary numbers
+- Add multiple values returned at once
 - Optimize with larger prepopulated buffers
 - Test in the browser
 - Test in Node
