@@ -36,6 +36,20 @@ in a particular range can be hard to do
 without complicating it in a way that it is hard to see if
 the randomness was not accidentally redused in the process.
 
+I believe that code generating cryptographically strong random
+numbers should be easy to understand and audit.
+
+This module consists of multiple small functions,
+there are many of them but each one is very simple, like:
+
+```ts
+const u8buf = new Uint8Array(1);
+
+const u8 = () => crypto.getRandomValues(u8buf)[0];
+
+const u5 = () => u8() >> 3;
+```
+
 TODO:
 
 - Add optional support for `Math.random()`
