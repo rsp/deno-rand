@@ -13,6 +13,20 @@ const u16buf = new Uint16Array(1);
 const s32buf = new Int32Array(1);
 const u32buf = new Uint32Array(1);
 
+const d64u8buf = new Uint8Array(8);
+const d64view = new DataView(d64u8buf.buffer);
+
+// f64() returns a random 64-bit floating point number
+// calculated from 64 bits of random data in the same way
+// as in ToDouble() used by V8 for Math.random: 
+// https://github.com/v8/v8/blob/085fed0f/src/base/utils/random-number-generator.h#L93-L99
+
+export const f64 = () => {
+  grv(d64u8buf);
+  d64view.setUint16(0, d64view.getUint16(0) & 0x000F | 0x3FF0);
+  return d64view.getFloat64(0) - 1;
+}
+
 export const s8 = () => grv(s8buf)[0];
 export const s16 = () => grv(s16buf)[0];
 export const s32 = () => grv(s32buf)[0];
@@ -80,6 +94,7 @@ export const ranges = {
   s8: [-0b10000000, 0b1111111],
   s16: [-1<<15, (1<<15) - 1],
   s32: [(-1<<30) * 2, (1<<30) * 2 - 1],
+  f64: [0, 0.9999999999999999],
 };
 
 export type testRngOptions = {
@@ -155,6 +170,7 @@ export const rand = {
   u8,
   u16,
   u32,
+  f64,
 };
 
 export default rand;

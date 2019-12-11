@@ -36,6 +36,7 @@ const tests = {
   s8: { num: 1e4, limit: 1e6 },
   s16: { num: 1e5, limit: 1e6 },
   s32: { num: 1e6, limit: 1e6, cover: false },
+  f64: { num: 1e6, limit: 1e6, cover: false, int: false },
 };
 
 for (let k in tests) {
