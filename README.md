@@ -3,15 +3,63 @@ Deno rand library
 
 [![Build Status][actions-img]][actions-url]<br>(CI tests on Linux, Mac, Windows)
 
-Work in progress
+Random utilities for getting random numbers in Deno conveniently.
+
+It uses the standard
+[`crypto.getRandomValues()`](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues)
+to get cryptographically strong random data.
+
+In Deno `crypto.getRandomValues()` was implemented in
+[PR #2327](https://github.com/denoland/deno/pull/2327)
+using Rust's [`rand::rngs::ThreadRng`](https://docs.rs/rand/0.6.5/rand/rngs/struct.ThreadRng.html).
+
+This module should work in the browser and in Node.js
+but currently it was only tested in Deno (on Linux, Mac and Windows).
+
+Work in progress.
+
+TODO:
+
+- Add optional support for `Math.random()`
+- Add more bit widths
+- Add multiple values
+- Optimize with larger prepopulated buffers
+- Test in the browser
+- Test in Node
+- Publish on npm as well
 
 Usage
 -
 
-...
+```ts
+import rand from './mod.ts';
 
-Goals
--
+// random 7-bit unsigned integer:
+const x = rand.u7();
+
+// random 5-bit signed integer:
+const y = rand.s6();
+```
+
+Short API:
+
+```ts
+import { u7 } from './mod.ts';
+
+const x = u7(); // random 7-bit unsigned integer
+```
+
+Readable API:
+
+```ts
+import { randU7 } from './mod.ts';
+
+const x = randU7(); // random 7-bit unsigned integer
+```
+
+The advantage of `randU7()` vs `rand.u7()`
+is that you can import only what you need and avoid
+mistakenly writing `s7` instead of `u7` etc.
 
 Issues
 -
