@@ -93,6 +93,29 @@ The advantage of `randU7()` vs `rand.u7()`
 is that you can import only what you need and avoid
 mistakenly writing `s7` instead of `u7` etc.
 
+Supported bit widths:
+
+s1,
+s2,
+s3,
+s4,
+s5,
+s6,
+s7,
+s8,
+s16,
+s32,
+u1,
+u2,
+u3,
+u4,
+u5,
+u6,
+u7,
+u8,
+u16,
+u32
+
 Issues
 -
 For any bug reports or feature requests please
